@@ -7,8 +7,6 @@ export class OpenHRMLeavePage extends BasePage {
   private toDateInput: Locator;
   private reasonInput: Locator;
   private applyButton: Locator;
-  // private updateButton: Locator;
-  // private cancelButton: Locator;
 
   private myLeave: Locator;
   private leaveListButton: Locator;
@@ -19,18 +17,11 @@ export class OpenHRMLeavePage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    // this.leaveTypeDropdown = page.locator('select[name="leaveType"]');
     this.leaveTypeDropdown = page.getByText("-- Select --");
-    // this.fromDateInput = page.locator('input[name="fromDate"]');
     this.fromDateInput = page.locator("form i").nth(2);
-    // this.toDateInput = page.locator('input[name="toDate"]');
     this.toDateInput = page.locator("form i").nth(3);
-    // this.reasonInput = page.locator('textarea[name="reason"]');
     this.reasonInput = page.getByPlaceholder("Comment here");
-    // this.applyButton = page.locator('button:has-text("Apply")');
     this.applyButton = page.getByRole("button", { name: "Apply" });
-    // this.updateButton = page.locator('button:has-text("Update")');
-    // this.cancelButton = page.locator('button:has-text("Cancel")');
     this.myLeave = page.getByRole("link", { name: "My Leave" });
     this.leaveListButton = page.getByRole("button", { name: "" });
     this.addComment = page.getByText("Add Comment");
@@ -52,13 +43,10 @@ export class OpenHRMLeavePage extends BasePage {
     await this.clickButton(this.applyButton);
   }
 
-  // async updateLeave(fromDate: string, toDate: string, reason: string) {
   async updateLeave(reason: string) {
     await this.clickButton(this.myLeave);
     await this.clickButton(this.leaveListButton);
     await this.clickButton(this.addComment);
-    // await this.fillInput(this.fromDateInput, fromDate);
-    // await this.fillInput(this.toDateInput, toDate);
     await this.fillInput(this.reasonInput, reason);
     await this.clickButton(this.saveButton);
   }
@@ -66,9 +54,6 @@ export class OpenHRMLeavePage extends BasePage {
   async cancelLeave(fromDate: string) {
     await this.clickButton(this.leaveListButton);
     await this.clickButton(this.cancelButton);
-
-    // await this.fillInput(this.fromDateInput, fromDate);
-    // await this.clickButton(this.cancelButton);
   }
 
   async updatedLeaveComment(): Promise<boolean> {

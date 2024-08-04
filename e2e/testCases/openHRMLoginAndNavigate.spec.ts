@@ -19,35 +19,21 @@ export default function openHRMLoginAndNavigateTests() {
       dashboardPage = new OpenHRMDashboardPage(page);
       leavePage = new OpenHRMLeavePage(page);
 
-      await loginPage.navigateTo("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
-      await loginPage.login(openHRMCredentials.username, openHRMCredentials.password);
+      await loginPage.navigateTo(
+        "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+      );
+      await loginPage.login(
+        openHRMCredentials.username,
+        openHRMCredentials.password
+      );
 
-      // Verify successful login
       await expect(dashboardPage.dashboardHeader).toBeVisible();
     });
 
-    // test.describe.configure({ timeout: 240000 }); // Setting the timeout for all tests in this describe block
-
     test("Should login to Open HRM and navigate to Apply Leave", async () => {
-      // await loginPage.navigateTo(
-      //   "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
-      // );
-      // await loginPage.login(
-      //   openHRMCredentials.username,
-      //   openHRMCredentials.password
-      // );
-      // await page.waitForTimeout(5000); // 5 seconds gg
-
-      // // Assertions
-      // await expect(dashboardPage.dashboardHeader).toBeVisible();
-
-      // Navigate to Apply Leave
       await dashboardPage.navigateToApplyLeave();
-
       await page.waitForTimeout(5000); // 5 seconds gg
-      // Assertions for Apply Leave page
       await expect(dashboardPage.applyLeaveHeader).toBeVisible();
-      // await expect(page.locator('h1:has-text("Apply Leave")')).toBeVisible();
     });
 
     test("Login with invalid credentials", async () => {
@@ -55,32 +41,29 @@ export default function openHRMLoginAndNavigateTests() {
         "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
       );
       await loginPage.invalidLogin("invalid_user", "invalid_password");
-      await page.waitForTimeout(5000); // 5 seconds gg
+      await page.waitForTimeout(5000);
       expect(await loginPage.isLoginErrorVisible()).toBe(true);
     });
 
     test("Should apply for leave", async () => {
       await dashboardPage.navigateToApplyLeave();
-      await page.waitForTimeout(5000); // 5 seconds gg
-
-      // Apply for leave
-      await leavePage.applyLeave('CAN - FMLA', "2023-08-10", "2023-08-11", "Family-GG-1");
-      // await expect( page.locator("text=Leave Applied Successfully")).toBeVisible();
+      await page.waitForTimeout(5000);
+      await leavePage.applyLeave(
+        "CAN - FMLA",
+        "2023-08-10",
+        "2023-08-11",
+        "Family-GG-1"
+      );
     });
 
     test("Should update the applied leave", async () => {
       await dashboardPage.navigateToApplyLeave();
-
-      // Update leave
       await leavePage.updateLeave("Updated reason");
-      // await expect(page.locator("text=Leave Updated Successfully")).toBeVisible();
       expect(await leavePage.updatedLeaveComment()).toBe(true);
     });
 
     test("Should cancel the updated leave", async () => {
       await dashboardPage.navigateToApplyLeave();
-
-      // Cancel leave
       await leavePage.cancelLeave("2023-08-10");
       await expect(
         page.locator("text=Leave Canceled Successfully")

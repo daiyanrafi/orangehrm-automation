@@ -18,10 +18,6 @@ export class BasePage {
     await locator.click()
   }
 
-  // public async navigateTo(url: string) {
-  //   await this.page.goto(url)
-  // }
-
   public async navigateTo(url: string) {
     await this.page.goto(url, { waitUntil: 'networkidle', timeout: 86400000 });
   }
