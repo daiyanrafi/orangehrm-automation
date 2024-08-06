@@ -9,10 +9,10 @@ export class OpenHRMLoginPage extends BasePage {
 
   constructor(page: Page) {
     super(page)
-    this.usernameInput = page.locator('input#txtUsername')
-    this.passwordInput = page.locator('input#txtPassword')
-    this.loginButton = page.locator('input#btnLogin')
-    this.loginError = page.locator('span#spanMessage')
+    this.usernameInput = page.getByPlaceholder('Username')
+    this.passwordInput = page.getByPlaceholder('Password')
+    this.loginButton = page.getByRole('button', { name: 'Login' })
+    this.loginError = page.getByRole('alert').locator('div').filter({ hasText: 'Invalid credentials' })
   }
 
   async login(username: string, password: string) {
