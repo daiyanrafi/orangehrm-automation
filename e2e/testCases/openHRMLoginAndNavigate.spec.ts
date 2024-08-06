@@ -50,22 +50,21 @@ export default function openHRMLoginAndNavigateTests() {
       // await expect(page.locator('h1:has-text("Apply Leave")')).toBeVisible();
     });
 
-    // test("Login with invalid credentials", async () => {
-    //   await loginPage.navigateTo(
-    //     "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
-    //   );
-    //   await loginPage.invalidLogin("invalid_user", "invalid_password");
-    //   await page.waitForTimeout(5000); // 5 seconds gg
-    //   expect(await loginPage.isLoginErrorVisible()).toBe(true);
-    // });
+    test("Login with invalid credentials", async () => {
+      await loginPage.navigateTo(
+        "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+      );
+      await loginPage.invalidLogin("invalid_user", "invalid_password");
+      await page.waitForTimeout(5000); // 5 seconds gg
+      expect(await loginPage.isLoginErrorVisible()).toBe(true);
+    });
 
     test("Should apply for leave", async () => {
       await dashboardPage.navigateToApplyLeave();
       await page.waitForTimeout(5000); // 5 seconds gg
 
       // Apply for leave
-      // await leavePage.applyLeave('CAN - FMLA', "2023-08-10", "2023-08-11", "Family-GG-1");
-      await leavePage.applyLeave("Family-GG-1");
+      await leavePage.applyLeave('CAN - FMLA', "2023-08-10", "2023-08-11", "Family-GG-1");
       // await expect( page.locator("text=Leave Applied Successfully")).toBeVisible();
     });
 
@@ -86,24 +85,6 @@ export default function openHRMLoginAndNavigateTests() {
       await expect(
         page.locator("text=Leave Canceled Successfully")
       ).toBeVisible();
-    });
-  });
-
-  test.describe("Open HRM Invalid Login Test Case", () => {
-    let page: Page;
-    let loginPage: OpenHRMLoginPage;
-
-    test.beforeAll(async ({ browser }) => {
-      const context = await browser.newContext();
-      page = await context.newPage();
-      loginPage = new OpenHRMLoginPage(page);
-    });
-
-    test("Login with invalid credentials", async () => {
-      await loginPage.navigateTo("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
-      await loginPage.invalidLogin("invalid_user", "invalid_password");
-      await page.waitForTimeout(5000); // 5 seconds wait
-      expect(await loginPage.isLoginErrorVisible()).toBe(true);
     });
   });
 }
